@@ -1,0 +1,31 @@
+services:
+  minio:
+    image: quay.io/minio/aistor/minio:latest
+    container_name: minio-local
+
+    restart: unless-stopped
+
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+
+    ports:
+      # 允许局域网通过本机 IP 访问
+      - "0.0.0.0:9100:9000"
+      - "0.0.0.0:9101:9101"
+
+    volumes:
+      # 对象数据持久化到 Mac
+      - ./data:/mnt/data
+
+      # AIStor 许可证
+      - ./minio.license:/minio.license:ro
+
+    command:
+      - minio
+      - server
+      - /mnt/data
+      - --console-address
+      - ":9101"
+      - --license
+      - /minio.license
