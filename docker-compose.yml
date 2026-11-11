@@ -17,7 +17,8 @@ services:
     volumes:
       # 对象数据持久化到 Mac
       - ./data:/mnt/data
-
+      # 证书配置，需要通过 https 访问时需要配置
+      # - ./certs:/etc/minio/certs
       # AIStor 许可证
       - ./minio.license:/minio.license:ro
 
